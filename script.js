@@ -45,7 +45,7 @@ async function analyzeImage() {
     form.append("meals", meals);
 
     try {
-        let res = await fetch("http://127.0.0.1:5000/analyze", {
+        let res = await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev/analyze", {
             method: "POST",
             body: form
         });
@@ -202,7 +202,7 @@ function startDetectionLoop() {
             form.append("image", blob, "frame.jpg"); // ✅ IMPORTANT FIX
 
             try {
-                let res = await fetch("http://127.0.0.1:5000/analyze", {
+                let res = await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev/analyze", {
                     method: "POST",
                     body: form
                 });
@@ -239,7 +239,7 @@ async function captureFrame() {
     let form = new FormData();
     form.append("image", blob);
 
-    let res = await fetch("http://127.0.0.1:5000/analyze", {
+    let res = await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev/analyze", {
         method: "POST",
         body: form
     });
@@ -272,7 +272,7 @@ async function sendMessage() {
     showTyping();
 
     try {
-        let res = await fetch("http://127.0.0.1:5000/chat", {
+        let res = await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message })
@@ -295,7 +295,7 @@ async function sendToBackend(file) {
     form.append("image", file);
 
     try {
-        await fetch("http://127.0.0.1:5000/upload", {
+        await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev /upload", {
             method: "POST",
             body: form
         });
@@ -318,7 +318,7 @@ async function sendChatMessage() {
     input.value = "";
 
     try {
-        let res = await fetch("http://127.0.0.1:5000/chat", {
+        let res = await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message })
@@ -342,7 +342,7 @@ async function sendChatMessage() {
 // ALERT CHECK
 async function checkBackend() {
     try {
-        let res = await fetch("http://127.0.0.1:5000/status");
+        let res = await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev/status");
         let data = await res.json();
 
         alert(data.alert ? "🚨 Drowsiness Detected!" : "✅ You are fine");
@@ -367,7 +367,7 @@ async function sendChatMessage() {
     input.value = "";
 
     try {
-        let res = await fetch("http://127.0.0.1:5000/chat", {
+        let res = await fetch("https://nonconsumable-unevenly-ryleigh.ngrok-free.dev/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message })
