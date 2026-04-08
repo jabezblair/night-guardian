@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Upload - NightGuardian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-pink-900 text-white flex">
+
+    <!-- Sidebar -->
+    <div class="w-64 glass p-5">
+        <h1 class="text-xl mb-6">🌙 NightGuardian</h1>
+        <a href="index.html" class="block p-2 rounded hover:bg-white/20">Dashboard</a>
+        <a href="upload.html" class="block p-2 rounded bg-white/20">Upload</a>
+        <a href="chat.html" class="block p-2 rounded hover:bg-white/20">Chat</a>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-1 p-6 space-y-6">
+
+        <div class="grid grid-cols-2 gap-6">
+
+            <!-- LEFT -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+
+                <h2 class="text-lg">📸 Image Analysis</h2>
+
+                <input type="file" id="imageUpload" hidden onchange="loadImage()">
+
+                <div id="preview" class="h-64 bg-gray-800 flex items-center justify-center rounded-xl">
+                    Upload Image
+                </div>
+
+                <button onclick="imageUpload.click()" class="w-full bg-blue-500 py-2 rounded-lg">
+                    Upload Image
+                </button>
+
+                <!-- Webcam -->
+                <video id="video" autoplay class="rounded-xl w-full hidden"></video>
+
+                <button onclick="startCamera()" class="w-full bg-purple-500 py-2 rounded-lg">
+                    Start Live Detection
+                </button>
+
+            </div>
+
+            <!-- RIGHT -->
+            <div class="glass p-6 rounded-2xl space-y-4">
+
+                <h2 class="text-lg">🧠 Wellness Inputs</h2>
+
+                <input id="waterInput" type="number" placeholder="Water (liters)" class="w-full text-black p-2 rounded">
+                <input id="mealInput" type="number" placeholder="Meals" class="w-full text-black p-2 rounded">
+
+                <button onclick="analyzeImage()" class="w-full bg-green-500 py-2 rounded-lg">
+                    Analyze Wellness
+                </button>
+
+                <p id="loading" class="text-sm text-yellow-300 hidden">⏳ Analyzing...</p>
+
+            </div>
+
+        </div>
+
+        <!-- RESULTS -->
+        <div class="glass p-6 rounded-2xl">
+            <h2 class="mb-4">📊 Results</h2>
+
+            <div class="grid grid-cols-4 gap-4 text-center">
+
+                <div class="stat-card">
+                    <h2 id="sleep">--</h2>
+                    <p>Sleep</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="water">--</h2>
+                    <p>Hydration</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="food">--</h2>
+                    <p>Nutrition</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="overall">--</h2>
+                    <p>Overall</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="alertBox" class="fixed top-5 right-5 bg-red-600 p-4 rounded hidden">
+        🚨 Drowsiness Detected!
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
