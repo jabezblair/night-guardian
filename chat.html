@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NightGuardian Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-pink-900 text-white flex h-screen">
+
+    <!-- Sidebar -->
+    <div class="w-64 glass p-5">
+        <h1 class="text-xl mb-4">🌙 NightGuardian</h1>
+        <a href="index.html" class="block p-2 rounded hover:bg-white/20">Dashboard</a>
+        <a href="upload.html" class="block p-2 rounded hover:bg-white/20">Upload</a>
+        <a href="chat.html" class="block p-2 rounded hover:bg-white/20">Chat</a>
+    </div>
+
+    <!-- Main Chat -->
+    <div class="flex-1 flex flex-col">
+        
+        <!-- Header -->
+        <div class="glass p-4 flex items-center gap-3">
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png" class="avatar">
+            <h2>AI Assistant</h2>
+        </div>
+
+        <!-- Messages -->
+        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 chat-scroll"></div>
+
+        <!-- Menu -->
+        <div id="menuArea" class="p-3 flex gap-2 flex-wrap"></div>
+
+        <!-- Input -->
+        <div class="p-3 flex gap-2">
+            <input id="chatInput" placeholder="Type a message..."
+                class="flex-1 p-3 rounded-full text-black outline-none" onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()" class="send-btn">➤</button>
+        </div>
+
+    </div>
+
+    <script>
+
+        // ================= STATE =================
+        let step = 0;
+
+        // ================= FLOW =================
+        const flow = [
+            ["Hello 👋", ["Help", "Health", "Alerts"]],
+            ["What do you need?", ["Sleep", "Water", "Status"]],
+        ];
+
+        // ================= INIT =================
+        loadChat();
+
+        // ================= LOAD =================
+        function loadChat() {
+            const saved = localStorage.getItem("chat");
+            if (saved) {
+                document.getElementById("chatMessages").innerHTML = saved;
+            } else {
+                nextStep();
+            }
+        }
+
+        // ================= MESSAGE UI =================
+        function addMessage(text, type) {
+            const chatBox = document.getElementById("chatMessages");
+
+            let wrapper = document.createElement("div");
+            wrapper.className = "flex items-end gap-2 " + (type === "user" ? "justify-end" : "");
+
+            let avatar = document.createElement("img");
+            avatar.className = "avatar";
+            avatar.src = type === "user"
+                ? "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                : "https://cdn-icons-png.flaticon.com/512/4712/4712027.png";
+
+            let msg = document.createElement("div");
+            msg.className = type === "user" ? "user-msg" : "bot-msg";
+            msg.innerText = text;
+
+            if (type === "user") {
+                wrapper.appendChild(msg);
+                wrapper.appendChild(avatar);
+            } else {
+                wrapper.appendChild(avatar);
+                wrapper.appendChild(msg);
+            }
+
+            chatBox.appendChild(wrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            saveChat();
+        }
+
+        // ================= MENU =================
+        function renderOptions(options) {
+            const menu = document.getElementById("menuArea");
+            menu.innerHTML = "";
+
+            options.forEach(opt => {
+                let btn = document.createElement("button");
+                btn.className = "menu-btn";
+                btn.innerText = opt;
+                btn.onclick = () => nextStep(opt);
+                menu.appendChild(btn);
+            });
+        }
+
+        // ================= FLOW =================
+        function nextStep(choice = null) {
+            if (choice) addMessage(choice, "user");
+
+            if (step >= flow.length) return;
+
+            const [text, options] = flow[step];
+
+            showTyping();
+
+            setTimeout(() => {
+                removeTyping();
+                addMessage(text, "bot");
+                renderOptions(options);
+            }, 700);
+
+            step++;
+        }
+
+        // ================= INPUT =================
+        function handleEnter(e) {
+            if (e.key === "Enter") sendMessage();
+        }
+
+        // ================= SEND =================
+        async function sendMessage() {
+            const input = document.getElementById("chatInput");
+            let message = input.value.trim();
+
+            if (!message) return;
+
+            addMessage(message, "user");
+            input.value = "";
+
+            showTyping();
+
+            try {
+                let res = await fetch("http://127.0.0.1:5000/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message })
+                });
+
+                let data = await res.json();
+
+                setTimeout(() => {
+                    removeTyping();
+                    addMessage(data.reply, "bot");
+                }, 600);
+
+            } catch {
+                removeTyping();
+                addMessage("❌ Backend not connected", "bot");
+            }
+        }
+
+        // ================= TYPING =================
+        function showTyping() {
+            const chatBox = document.getElementById("chatMessages");
+
+            let div = document.createElement("div");
+            div.id = "typing";
+            div.className = "bot-msg";
+            div.innerText = "Typing...";
+
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function removeTyping() {
+            let t = document.getElementById("typing");
+            if (t) t.remove();
+        }
+
+        // ================= STORAGE =================
+        function saveChat() {
+            localStorage.setItem("chat", document.getElementById("chatMessages").innerHTML);
+        }
+
+    </script>
+
+</body>
+
+</html>

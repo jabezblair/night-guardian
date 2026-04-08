@@ -1,0 +1,77 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.glass {
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.chat-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.user-msg {
+    background: linear-gradient(135deg, #4f46e5, #9333ea);
+    padding: 10px;
+    border-radius: 20px 20px 5px 20px;
+    max-width: 70%;
+}
+
+.bot-msg {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 10px;
+    border-radius: 20px 20px 20px 5px;
+    max-width: 70%;
+}
+
+.menu-btn {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: 0.2s;
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.send-btn {
+    background: linear-gradient(135deg, #9333ea, #ec4899);
+    padding: 10px 16px;
+    border-radius: 50%;
+}
+.stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+.stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
